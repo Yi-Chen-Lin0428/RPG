@@ -1,0 +1,59 @@
+\doxysection{Map\+Manager 類別 參考文件}
+\hypertarget{class_map_manager}{}\label{class_map_manager}\index{MapManager@{MapManager}}
+\doxysubsubsection*{公開型態}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_map_manager_a5b2dfff92dcc8d6633366f6c7b08c033}\label{class_map_manager_a5b2dfff92dcc8d6633366f6c7b08c033} 
+enum {\bfseries map\+Num} \{ \newline
+{\bfseries hall}
+, {\bfseries matrix}
+, {\bfseries yard}
+, {\bfseries garage}
+, \newline
+{\bfseries gas\+\_\+tation}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{公開方法(Public Methods)}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_map_manager_a76a284b3cb51160bfc020d431edb5750}{Map\+Manager}} (int init\+Map)
+\item 
+\Hypertarget{class_map_manager_a6d0bea445f20364ef8fd0e170de24b33}\label{class_map_manager_a6d0bea445f20364ef8fd0e170de24b33} 
+void {\bfseries update} (const int map\+Num)
+\item 
+\Hypertarget{class_map_manager_a1f3b94815261a9392d1688b4492cb746}\label{class_map_manager_a1f3b94815261a9392d1688b4492cb746} 
+void {\bfseries draw} (sf\+::\+Render\+Window \&win)
+\item 
+\Hypertarget{class_map_manager_a1120770354cf05e8e1468ccff885fb23}\label{class_map_manager_a1120770354cf05e8e1468ccff885fb23} 
+void {\bfseries set\+Layer\+Qty} ()
+\item 
+\Hypertarget{class_map_manager_a54256abecd5d9e7caf38f8853d6fe270}\label{class_map_manager_a54256abecd5d9e7caf38f8853d6fe270} 
+int {\bfseries get\+Layer\+Qty} ()
+\item 
+\Hypertarget{class_map_manager_af7afe136eeb9f797e51693dfb403894c}\label{class_map_manager_af7afe136eeb9f797e51693dfb403894c} 
+int {\bfseries get\+Cur\+Map} ()
+\item 
+\Hypertarget{class_map_manager_a9eff6fffaf5200d3d840f84f0a6d6fc2}\label{class_map_manager_a9eff6fffaf5200d3d840f84f0a6d6fc2} 
+void {\bfseries set\+Cur\+Map} (const int map\+Num)
+\item 
+\Hypertarget{class_map_manager_a20f5c5e6290b751136e721ee65d84d01}\label{class_map_manager_a20f5c5e6290b751136e721ee65d84d01} 
+const tmx\+::\+Map \& {\bfseries get\+CMap} ()
+\item 
+\Hypertarget{class_map_manager_a0c4fef60b35a34dca85e462904bf5839}\label{class_map_manager_a0c4fef60b35a34dca85e462904bf5839} 
+void {\bfseries set\+CMap} (tmx\+::\+Map \&\&\+\_\+cmap)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{建構子與解構子說明文件}
+\Hypertarget{class_map_manager_a76a284b3cb51160bfc020d431edb5750}\index{MapManager@{MapManager}!MapManager@{MapManager}}
+\index{MapManager@{MapManager}!MapManager@{MapManager}}
+\doxysubsubsection{\texorpdfstring{MapManager()}{MapManager()}}
+{\footnotesize\ttfamily \label{class_map_manager_a76a284b3cb51160bfc020d431edb5750} 
+Map\+Manager\+::\+Map\+Manager (\begin{DoxyParamCaption}\item[{int}]{init\+Map}{}\end{DoxyParamCaption})}
+
+notes\+: 1，tmx\+::\+Map禁止使用\textquotesingle{}=\textquotesingle{}傳遞地圖，這裡用std\+::move解決， 地圖用完要記得還回去。 2，更新函式應放在遊戲回圈內才能刷新數據 
+
+此類別(class) 文件是由下列檔案中產生\+:\begin{DoxyCompactItemize}
+\item 
+Map\+Manager.\+hpp\item 
+Map\+Manager.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,70 @@
+\doxysection{Map\+Manager.\+hpp}
+\hypertarget{_map_manager_8hpp_source}{}\label{_map_manager_8hpp_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{/*********************************************************************}}
+\DoxyCodeLine{00002\ \textcolor{comment}{\ *\ \(\backslash\)file\ \ \ MapManager.hpp}}
+\DoxyCodeLine{00003\ \textcolor{comment}{\ *\ \(\backslash\)brief\ \ 包含MapManager類別聲明，用於管理地圖相關操作。}}
+\DoxyCodeLine{00004\ \textcolor{comment}{\ *\ "{}SFMLOrthogonalLayer.hpp"{}是tmxLite提供的正交2D地圖渲染器}}
+\DoxyCodeLine{00005\ \textcolor{comment}{\ *\ 來源:https://github.com/fallahn/tmxlite/blob/master/SFMLExample/src/SFMLOrthogonalLayer.hpp}}
+\DoxyCodeLine{00006\ \textcolor{comment}{\ *\ \(\backslash\)author\ Lin,\ YiChen}}
+\DoxyCodeLine{00007\ \textcolor{comment}{\ *\ \(\backslash\)date\ \ \ 12\ 2024}}
+\DoxyCodeLine{00008\ \textcolor{comment}{\ *********************************************************************/}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ "{}tmxlite/Map.hpp"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ "{}SFMLOrthogonalLayer.hpp"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <SFML/Graphics.hpp>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{preprocessor}{\#define\ MAP\_WIDTH\ \ (int)960\ }}
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ MAP\_HIGHTH\ (int)640}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ MAP\_QTY\ \ \ \ 5}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_map_manager}{MapManager}}}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \mbox{\hyperlink{class_map_manager_a76a284b3cb51160bfc020d431edb5750}{MapManager}}(\textcolor{keywordtype}{int}\ initMap);}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{class_map_manager}{\string~MapManager}}();}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ update(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ mapNum);}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keywordtype}{void}\ draw(sf::RenderWindow\&\ win);}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ setLayerQty();}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keywordtype}{int}\ getLayerQty();}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{int}\ getCurMap();}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{void}\ setCurMap(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ mapNum);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keyword}{const}\ tmx::Map\&\ getCMap();}
+\DoxyCodeLine{00035\ \ \ \ \ \textcolor{keywordtype}{void}\ setCMap(tmx::Map\&\&\ \_cmap);}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{comment}{//void\ drawCurMap();}}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{enum}\ mapNum}
+\DoxyCodeLine{00038\ \ \ \ \ \{}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ hall,}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ matrix,}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ yard,}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ garage,}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ gas\_tation}
+\DoxyCodeLine{00044\ \ \ \ \ \};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00047\ \ \ \ \ std::vector<tmx::Map>\ mapList;}
+\DoxyCodeLine{00048\ \ \ \ \ std::vector<MapLayer*>\ layerList;}
+\DoxyCodeLine{00049\ \ \ \ \ tmx::Map\ curCMap;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{int}\ curMapID;}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{int}\ layerQty;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ delLayerPtr();}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keywordtype}{bool}\ LoadMap(tmx::Map*\ \_map,\ std::string\ mapPath);\ \textcolor{comment}{//unused}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ std::string\ mapPaths[5]\ =\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}./resources/hall.tmx"{}},}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}./resources/matrix.tmx"{}},}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}./resources/yard.tmx"{}},}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}./resources/garage.tmx"{}},}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}./resources/gas\_station.tmx"{}}}
+\DoxyCodeLine{00061\ \ \ \ \ \};}
+\DoxyCodeLine{00062\ \};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ }
+
+\end{DoxyCode}

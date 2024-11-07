@@ -1,0 +1,109 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "hall.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "全部檔案 (*)",
+    "fileStates": {
+        "TileSheet_1.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 3
+        },
+        "TileSheet_2.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 3
+        },
+        "garage.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 479.99999999999994,
+                "y": 319.33333333333337
+            }
+        },
+        "gas_station.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 480,
+                "y": 319.5
+            }
+        },
+        "hall.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 621,
+                "y": 456.75
+            }
+        },
+        "map.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 178,
+                "y": 411.5
+            }
+        },
+        "map1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 502.66666666666663,
+                "y": 267
+            }
+        },
+        "matrix.tmx": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 480,
+                "y": 319.5
+            }
+        },
+        "player_idle_sheet.tsx": {
+            "scaleInDock": 4,
+            "scaleInEditor": 1
+        },
+        "yard.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 480,
+                "y": 320.25
+            }
+        }
+    },
+    "last.exportedFilePath": "C:/Users/macma/Desktop/RPG/resources",
+    "last.imagePath": "C:/Users/macma/Desktop/Updated_ZombiePack_AssetPack/AnimationSheets/Player_Character_32x32",
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "hall.tmx",
+        "matrix.tmx",
+        "TileSheet_1.tsx",
+        "TileSheet_2.tsx",
+        "yard.tmx",
+        "gas_station.tmx",
+        "garage.tmx"
+    ],
+    "project": "TiledMap.tiled-project",
+    "recentFiles": [
+        "garage.tmx",
+        "gas_station.tmx",
+        "yard.tmx",
+        "TileSheet_2.tsx",
+        "TileSheet_1.tsx",
+        "matrix.tmx",
+        "hall.tmx",
+        "player_idle_sheet.tsx",
+        "map1.tmx",
+        "map.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.transparentColor": "#000000"
+}

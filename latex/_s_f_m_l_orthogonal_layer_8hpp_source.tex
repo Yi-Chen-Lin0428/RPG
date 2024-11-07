@@ -1,0 +1,654 @@
+\doxysection{SFMLOrthogonal\+Layer.\+hpp}
+\hypertarget{_s_f_m_l_orthogonal_layer_8hpp_source}{}\label{_s_f_m_l_orthogonal_layer_8hpp_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{comment}{/*********************************************************************}}
+\DoxyCodeLine{00003\ \textcolor{comment}{(c)\ Matt\ Marchant\ \&\ contributors\ 2016\ -\/\ 2024}}
+\DoxyCodeLine{00004\ \textcolor{comment}{http://trederia.blogspot.com}}
+\DoxyCodeLine{00005\ \textcolor{comment}{}}
+\DoxyCodeLine{00006\ \textcolor{comment}{tmxlite\ -\/\ Zlib\ license.}}
+\DoxyCodeLine{00007\ \textcolor{comment}{}}
+\DoxyCodeLine{00008\ \textcolor{comment}{This\ software\ is\ provided\ 'as-\/is',\ without\ any\ express\ or}}
+\DoxyCodeLine{00009\ \textcolor{comment}{implied\ warranty.\ In\ no\ event\ will\ the\ authors\ be\ held}}
+\DoxyCodeLine{00010\ \textcolor{comment}{liable\ for\ any\ damages\ arising\ from\ the\ use\ of\ this\ software.}}
+\DoxyCodeLine{00011\ \textcolor{comment}{}}
+\DoxyCodeLine{00012\ \textcolor{comment}{Permission\ is\ granted\ to\ anyone\ to\ use\ this\ software\ for\ any\ purpose,}}
+\DoxyCodeLine{00013\ \textcolor{comment}{including\ commercial\ applications,\ and\ to\ alter\ it\ and\ redistribute}}
+\DoxyCodeLine{00014\ \textcolor{comment}{it\ freely,\ subject\ to\ the\ following\ restrictions:}}
+\DoxyCodeLine{00015\ \textcolor{comment}{}}
+\DoxyCodeLine{00016\ \textcolor{comment}{1.\ The\ origin\ of\ this\ software\ must\ not\ be\ misrepresented;}}
+\DoxyCodeLine{00017\ \textcolor{comment}{you\ must\ not\ claim\ that\ you\ wrote\ the\ original\ software.}}
+\DoxyCodeLine{00018\ \textcolor{comment}{If\ you\ use\ this\ software\ in\ a\ product,\ an\ acknowledgment}}
+\DoxyCodeLine{00019\ \textcolor{comment}{in\ the\ product\ documentation\ would\ be\ appreciated\ but}}
+\DoxyCodeLine{00020\ \textcolor{comment}{is\ not\ required.}}
+\DoxyCodeLine{00021\ \textcolor{comment}{}}
+\DoxyCodeLine{00022\ \textcolor{comment}{2.\ Altered\ source\ versions\ must\ be\ plainly\ marked\ as\ such,}}
+\DoxyCodeLine{00023\ \textcolor{comment}{and\ must\ not\ be\ misrepresented\ as\ being\ the\ original\ software.}}
+\DoxyCodeLine{00024\ \textcolor{comment}{}}
+\DoxyCodeLine{00025\ \textcolor{comment}{3.\ This\ notice\ may\ not\ be\ removed\ or\ altered\ from\ any}}
+\DoxyCodeLine{00026\ \textcolor{comment}{source\ distribution.}}
+\DoxyCodeLine{00027\ \textcolor{comment}{*********************************************************************/}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{comment}{/*}}
+\DoxyCodeLine{00030\ \textcolor{comment}{Creates\ an\ SFML\ drawable\ from\ an\ Orthogonal\ tmx\ map\ layer.}}
+\DoxyCodeLine{00031\ \textcolor{comment}{This\ is\ an\ example\ of\ drawing\ with\ SFML\ -\/\ not\ all\ features}}
+\DoxyCodeLine{00032\ \textcolor{comment}{are\ implemented.}}
+\DoxyCodeLine{00033\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#ifndef\ SFML\_ORTHO\_HPP\_}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ SFML\_ORTHO\_HPP\_}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#include\ <tmxlite/Map.hpp>}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#include\ <tmxlite/TileLayer.hpp>}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#include\ <tmxlite/detail/Log.hpp>}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#include\ <SFML/Graphics/Drawable.hpp>}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#include\ <SFML/Graphics/RenderStates.hpp>}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#include\ <SFML/Graphics/RenderTarget.hpp>}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\#include\ <SFML/Graphics/Vertex.hpp>}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#include\ <SFML/Graphics/Texture.hpp>}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#include\ <SFML/Graphics/Transformable.hpp>}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#include\ <SFML/System/Time.hpp>}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#include\ <SFML/System/Vector2.hpp>}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00055\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00056\ \textcolor{preprocessor}{\#include\ <limits>}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_map_layer}{MapLayer}}\ final\ :\ \textcolor{keyword}{public}\ sf::Drawable}
+\DoxyCodeLine{00062\ \{}
+\DoxyCodeLine{00063\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \mbox{\hyperlink{class_map_layer}{MapLayer}}(\textcolor{keyword}{const}\ tmx::Map\&\ map,\ std::size\_t\ idx)}
+\DoxyCodeLine{00066\ \ \ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ layers\ =\ map.getLayers();}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (map.getOrientation()\ !=\ tmx::Orientation::Orthogonal)}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Map\ is\ not\ orthogonal\ -\/\ nothing\ will\ be\ drawn"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (idx\ >=\ layers.size())}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}Layer\ index\ "{}}\ <<\ idx\ <<\ \textcolor{stringliteral}{"{}\ is\ out\ of\ range,\ layer\ count\ is\ "{}}\ <<\ layers.size()\ <<\ std::endl;}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (layers[idx]-\/>getType()\ !=\ tmx::Layer::Type::Tile)}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ std::cout\ <<\ \textcolor{stringliteral}{"{}layer\ "{}}\ <<\ idx\ <<\ \textcolor{stringliteral}{"{}\ is\ not\ a\ Tile\ layer..."{}}\ <<\ std::endl;}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//round\ the\ chunk\ size\ to\ the\ nearest\ tile}}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ tileSize\ =\ map.getTileSize();}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \ \ \ \ m\_chunkSize.x\ =\ std::floor(m\_chunkSize.x\ /\ tileSize.x)\ *\ tileSize.x;}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ m\_chunkSize.y\ =\ std::floor(m\_chunkSize.y\ /\ tileSize.y)\ *\ tileSize.y;}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ m\_mapTileSize.x\ =\ map.getTileSize().x;}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \ \ \ \ m\_mapTileSize.y\ =\ map.getTileSize().y;}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ layer\ =\ layers[idx]-\/>getLayerAs<tmx::TileLayer>();}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \ \ \ \ createChunks(map,\ layer);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ mapSize\ =\ map.getBounds();}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \ \ \ \ m\_globalBounds.width\ =\ mapSize.width;}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \ \ \ \ m\_globalBounds.height\ =\ mapSize.height;}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \mbox{\hyperlink{class_map_layer}{\string~MapLayer}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00099\ \ \ \ \ \mbox{\hyperlink{class_map_layer}{MapLayer}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_map_layer}{MapLayer}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00100\ \ \ \ \ \mbox{\hyperlink{class_map_layer}{MapLayer}}\&\ operator\ =\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{class_map_layer}{MapLayer}}\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{const}\ sf::FloatRect\&\ getGlobalBounds()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_globalBounds;\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordtype}{void}\ setTile(std::int32\_t\ tileX,\ std::int32\_t\ tileY,\ tmx::TileLayer::Tile\ tile,\ \textcolor{keywordtype}{bool}\ refresh\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00105\ \ \ \ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ sf::Vector2u\ chunkLocale;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ selectedChunk\ =\ getChunkAndTransform(tileX,\ tileY,\ chunkLocale);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ selectedChunk-\/>setTile(chunkLocale.x,\ chunkLocale.y,\ tile,\ refresh);}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ tmx::TileLayer::Tile\ getTile(std::int32\_t\ tileX,\ std::int32\_t\ tileY)}
+\DoxyCodeLine{00112\ \ \ \ \ \{}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ sf::Vector2u\ chunkLocale;}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ selectedChunk\ =\ getChunkAndTransform(tileX,\ tileY,\ chunkLocale);}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ selectedChunk-\/>getTile(chunkLocale.x,\ chunkLocale.y);}
+\DoxyCodeLine{00116\ \ \ \ \ \}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{void}\ setColor(std::int32\_t\ tileX,\ std::int32\_t\ tileY,\ sf::Color\ color,\ \textcolor{keywordtype}{bool}\ refresh\ =\ \textcolor{keyword}{true})}
+\DoxyCodeLine{00118\ \ \ \ \ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ sf::Vector2u\ chunkLocale;}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ selectedChunk\ =\ getChunkAndTransform(tileX,\ tileY,\ chunkLocale);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ selectedChunk-\/>setColor(chunkLocale.x,\ chunkLocale.y,\ color,\ refresh);}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ sf::Color\ getColor(std::int32\_t\ tileX,\ std::int32\_t\ tileY)}
+\DoxyCodeLine{00125\ \ \ \ \ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ sf::Vector2u\ chunkLocale;}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ selectedChunk\ =\ getChunkAndTransform(tileX,\ tileY,\ chunkLocale);}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ selectedChunk-\/>getColor(chunkLocale.x,\ chunkLocale.y);}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordtype}{void}\ setOffset(sf::Vector2f\ offset)\ \{\ m\_offset\ =\ offset;\ \}}
+\DoxyCodeLine{00132\ \ \ \ \ sf::Vector2f\ getOffset()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_offset;\ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ update(sf::Time\ elapsed)}
+\DoxyCodeLine{00135\ \ \ \ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ c\ :\ m\_visibleChunks)}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (AnimationState\&\ as\ :\ c-\/>getActiveAnimations())}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ as.currentTime\ +=\ elapsed;}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tmx::TileLayer::Tile\ tile;}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::int32\_t\ animTime\ =\ 0;}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ x\ =\ as.animTile.animation.frames.begin();}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (animTime\ <\ as.currentTime.asMilliseconds())}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (x\ ==\ as.animTile.animation.frames.end())}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x\ =\ as.animTile.animation.frames.begin();}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ as.currentTime\ -\/=\ sf::milliseconds(animTime);}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ animTime\ =\ 0;}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tile.ID\ =\ x-\/>tileID;}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ animTime\ +=\ x-\/>duration;}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ x++;}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ setTile(as.tileCords.x,\ as.tileCords.y,\ tile);}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{comment}{//increasing\ m\_chunkSize\ by\ 4;\ fixes\ render\ problems\ when\ mapsize\ !=\ chunksize}}
+\DoxyCodeLine{00166\ \ \ \ \ \textcolor{comment}{//sf::Vector2f\ m\_chunkSize\ =\ sf::Vector2f(1024.f,\ 1024.f);}}
+\DoxyCodeLine{00167\ \ \ \ \ sf::Vector2f\ m\_chunkSize\ =\ sf::Vector2f(512.f,\ 512.f);}
+\DoxyCodeLine{00168\ \ \ \ \ sf::Vector2u\ m\_chunkCount;}
+\DoxyCodeLine{00169\ \ \ \ \ sf::Vector2u\ m\_mapTileSize;\ \ \ \textcolor{comment}{//\ general\ Tilesize\ of\ Map}}
+\DoxyCodeLine{00170\ \ \ \ \ sf::FloatRect\ m\_globalBounds;}
+\DoxyCodeLine{00171\ \ \ \ \ sf::Vector2f\ m\_offset;}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keyword}{using\ }TextureResource\ =\ std::map<std::string,\ std::unique\_ptr<sf::Texture>>;}
+\DoxyCodeLine{00174\ \ \ \ \ TextureResource\ m\_textureResource;}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{struct\ }AnimationState}
+\DoxyCodeLine{00177\ \ \ \ \ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ sf::Vector2u\ tileCords;}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ sf::Time\ startTime;}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ sf::Time\ currentTime;}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ tmx::Tileset::Tile\ animTile;}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ std::uint8\_t\ flipFlags;}
+\DoxyCodeLine{00183\ \ \ \ \ \};}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{class\ }Chunk\ final\ :\ \textcolor{keyword}{public}\ sf::Transformable,\ \textcolor{keyword}{public}\ sf::Drawable}
+\DoxyCodeLine{00186\ \ \ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }Ptr\ =\ std::unique\_ptr<Chunk>;}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }Tile\ =\ std::array<sf::Vertex,\ 6u>;}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ Chunk(\textcolor{keyword}{const}\ tmx::TileLayer\&\ layer,\ std::vector<const\ tmx::Tileset*>\ tilesets,}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ sf::Vector2f\&\ position,\ \textcolor{keyword}{const}\ sf::Vector2f\&\ tileCount,}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ sf::Vector2u\&\ tileSize,\ std::size\_t\ rowSize,}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \ \ TextureResource\&\ tr,\ \textcolor{keyword}{const}\ std::map<std::uint32\_t,\ tmx::Tileset::Tile>\&\ animTiles)}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ :\ m\_animTiles(animTiles)}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ setPosition(position);}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ layerOpacity\ =\ \textcolor{keyword}{static\_cast<}sf::Uint8\textcolor{keyword}{>}(layer.getOpacity()\ /\ 1.f\ *\ 255.f);}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Color\ vertColour\ =\ sf::Color(200,\ 200,\ 200,\ layerOpacity);}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ offset\ =\ layer.getOffset();}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ layerOffset\ =\ \{\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(offset.x),\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(offset.y)\ \};}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ chunkTileCount\ =\ \{\ tileCount.x,\ tileCount.y\ \};}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ mapTileSize\ =\ tileSize;}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ tileIDs\ =\ layer.getTiles();}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//go\ through\ the\ tiles\ and\ create\ all\ arrays\ (for\ latter\ manipulation)}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ ts\ :\ tilesets)}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ts-\/>getImagePath().empty())}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tmx::Logger::log(\textcolor{stringliteral}{"{}This\ example\ does\ not\ support\ Collection\ of\ Images\ tilesets"{}},\ tmx::Logger::Type::Info);}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tmx::Logger::log(\textcolor{stringliteral}{"{}Chunks\ using\ "{}}\ +\ ts-\/>getName()\ +\ \textcolor{stringliteral}{"{}\ will\ not\ be\ created"{}},\ tmx::Logger::Type::Info);}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_chunkArrays.emplace\_back(std::make\_unique<ChunkArray>(*tr.find(ts-\/>getImagePath())-\/>second,\ *ts));}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ xPos\ =\ \textcolor{keyword}{static\_cast<}std::size\_t\textcolor{keyword}{>}(position.x\ /\ tileSize.x);}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ yPos\ =\ \textcolor{keyword}{static\_cast<}std::size\_t\textcolor{keyword}{>}(position.y\ /\ tileSize.y);}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ y\ =\ yPos;\ y\ <\ yPos\ +\ tileCount.y;\ ++y)}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ x\ =\ xPos;\ x\ <\ xPos\ +\ tileCount.x;\ ++x)}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ idx\ =\ (y\ *\ rowSize\ +\ x);}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_chunkTileIDs.emplace\_back(tileIDs[idx]);}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_chunkColors.emplace\_back(vertColour);}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ generateTiles(\textcolor{keyword}{true});}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ generateTiles(\textcolor{keywordtype}{bool}\ registerAnimation\ =\ \textcolor{keyword}{false})}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (registerAnimation)}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_activeAnimations.clear();}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ ca\ :\ m\_chunkArrays)}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::uint32\_t\ idx\ =\ 0;}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::uint32\_t\ xPos\ =\ \textcolor{keyword}{static\_cast<}std::uint32\_t\textcolor{keyword}{>}(getPosition().x\ /\ mapTileSize.x);}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::uint32\_t\ yPos\ =\ \textcolor{keyword}{static\_cast<}std::uint32\_t\textcolor{keyword}{>}(getPosition().y\ /\ mapTileSize.y);}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ y\ =\ yPos;\ y\ <\ yPos\ +\ chunkTileCount.y;\ ++y)}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ x\ =\ xPos;\ x\ <\ xPos\ +\ chunkTileCount.x;\ ++x)}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ <\ m\_chunkTileIDs.size()\ \&\&\ m\_chunkTileIDs[idx].ID\ >=\ ca-\/>m\_firstGID}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ m\_chunkTileIDs[idx].ID\ <=\ ca-\/>m\_lastGID)}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (registerAnimation\ \&\&\ m\_animTiles.find(m\_chunkTileIDs[idx].ID)\ !=\ m\_animTiles.end())}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ AnimationState\ as;}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ as.animTile\ =\ m\_animTiles[m\_chunkTileIDs[idx].ID];}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ as.startTime\ =\ sf::milliseconds(0);}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ as.tileCords\ =\ sf::Vector2u(x,\ y);}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_activeAnimations.push\_back(as);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tileOffset(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(x)\ *\ mapTileSize.x,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(y)\ *\ mapTileSize.y\ +\ mapTileSize.y\ -\/\ ca-\/>tileSetSize.y);}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ idIndex\ =\ m\_chunkTileIDs[idx].ID\ -\/\ ca-\/>m\_firstGID;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tileIndex(sf::Vector2i(idIndex\ \%\ ca-\/>tsTileCount.x,\ idIndex\ /\ ca-\/>tsTileCount.x));}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tileIndex.x\ *=\ ca-\/>tileSetSize.x;}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tileIndex.y\ *=\ ca-\/>tileSetSize.y;}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Tile\ tile\ =}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vertex(tileOffset\ -\/\ getPosition(),\ m\_chunkColors[idx],\ tileIndex),}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vertex(tileOffset\ -\/\ getPosition()\ +\ sf::Vector2f(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(ca-\/>tileSetSize.x),\ 0.f),\ m\_chunkColors[idx],\ tileIndex\ +\ sf::Vector2f(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(ca-\/>tileSetSize.x),\ 0.f)),}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vertex(tileOffset\ -\/\ getPosition()\ +\ sf::Vector2f(sf::Vector2u(ca-\/>tileSetSize.x,\ ca-\/>tileSetSize.y)),\ m\_chunkColors[idx],\ tileIndex\ +\ sf::Vector2f(sf::Vector2u(ca-\/>tileSetSize.x,\ ca-\/>tileSetSize.y))),}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vertex(tileOffset\ -\/\ getPosition(),\ m\_chunkColors[idx],\ tileIndex),}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vertex(tileOffset\ -\/\ getPosition()\ +\ sf::Vector2f(sf::Vector2u(ca-\/>tileSetSize.x,\ ca-\/>tileSetSize.y)),\ m\_chunkColors[idx],\ tileIndex\ +\ sf::Vector2f(sf::Vector2u(ca-\/>tileSetSize.x,\ ca-\/>tileSetSize.y))),}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vertex(tileOffset\ -\/\ getPosition()\ +\ sf::Vector2f(0.f,\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(ca-\/>tileSetSize.y)),\ m\_chunkColors[idx],\ tileIndex\ +\ sf::Vector2f(0.f,\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(ca-\/>tileSetSize.y)))}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ doFlips(m\_chunkTileIDs[idx].flipFlags,\ \&tile[0].texCoords,\ \&tile[1].texCoords,\ \&tile[2].texCoords,\ \&tile[3].texCoords,\ \&tile[4].texCoords,\ \&tile[5].texCoords);}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ca-\/>addTile(tile);}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ idx++;}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \string~Chunk()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ Chunk(\textcolor{keyword}{const}\ Chunk\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ Chunk\&\ operator\ =\ (\textcolor{keyword}{const}\ Chunk\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ std::vector<AnimationState>\&\ getActiveAnimations()}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_activeAnimations;}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ tmx::TileLayer::Tile\ getTile(std::int32\_t\ x,\ std::int32\_t\ y)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00293\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_chunkTileIDs[calcIndexFrom(x,\ y)];}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ setTile(std::int32\_t\ x,\ std::int32\_t\ y,\ tmx::TileLayer::Tile\ tile,\ \textcolor{keywordtype}{bool}\ refresh)}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \ \ \ \ m\_chunkTileIDs[calcIndexFrom(x,\ y)]\ =\ tile;}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ \ maybeRegenerate(refresh);}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ sf::Color\ getColor(std::int32\_t\ x,\ std::int32\_t\ y)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00304\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_chunkColors[calcIndexFrom(x,\ y)];}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ setColor(std::int32\_t\ x,\ std::int32\_t\ y,\ sf::Color\ color,\ \textcolor{keywordtype}{bool}\ refresh)}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \ \ \ \ m\_chunkColors[calcIndexFrom(x,\ y)]\ =\ color;}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ maybeRegenerate(refresh);}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ maybeRegenerate(\textcolor{keywordtype}{bool}\ refresh)}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (refresh)}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ ca\ :\ m\_chunkArrays)}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ca-\/>reset();}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ generateTiles();}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ std::int32\_t\ calcIndexFrom(std::int32\_t\ x,\ std::int32\_t\ y)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00327\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x\ +\ y\ *\ \textcolor{keyword}{static\_cast<}std::int32\_t\textcolor{keyword}{>}(chunkTileCount.x);}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ empty()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00332\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_chunkArrays.empty();}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ flipY(sf::Vector2f*\ v0,\ sf::Vector2f*\ v1,\ sf::Vector2f*\ v2,\ sf::Vector2f*\ v3,\ sf::Vector2f*\ v4,\ sf::Vector2f*\ v5)}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Flip\ Y}}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tmp0\ =\ *v0;}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \ \ \ \ v0-\/>y\ =\ v5-\/>y;}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \ \ v3-\/>y\ =\ v5-\/>y;}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ v5-\/>y\ =\ tmp0.y;}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tmp2\ =\ *v2;}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \ \ \ \ v2-\/>y\ =\ v1-\/>y;}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \ \ \ \ \ \ v4-\/>y\ =\ v1-\/>y;}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \ \ \ \ \ \ v1-\/>y\ =\ tmp2.y;}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ flipX(sf::Vector2f*\ v0,\ sf::Vector2f*\ v1,\ sf::Vector2f*\ v2,\ sf::Vector2f*\ v3,\ sf::Vector2f*\ v4,\ sf::Vector2f*\ v5)}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Flip\ X}}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tmp0\ =\ *v0;}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ \ \ \ \ v0-\/>x\ =\ v1-\/>x;}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ v3-\/>x\ =\ v1-\/>x;}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ \ \ \ \ v1-\/>x\ =\ tmp0.x;}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tmp2\ =\ *v2;}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \ \ \ \ \ \ v2-\/>x\ =\ v5-\/>x;}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \ \ \ \ \ \ v4-\/>x\ =\ v5-\/>x;}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ \ \ \ \ v5-\/>x\ =\ tmp2.x;}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ flipD(sf::Vector2f*\ v0,\ sf::Vector2f*\ v1,\ sf::Vector2f*\ v2,\ sf::Vector2f*\ v3,\ sf::Vector2f*\ v4,\ sf::Vector2f*\ v5)}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Diagonal\ flip}}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tmp2\ =\ *v2;}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ \ \ \ \ *v2\ =\ *v4;}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ \ \ \ \ *v4\ =\ tmp2;}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tmp0\ =\ *v0;}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ \ \ \ \ *v0\ =\ *v3;}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ \ \ \ \ *v3\ =\ tmp0;}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tmp1\ =\ *v1;}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ \ \ \ \ *v1\ =\ *v5;}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ \ \ \ \ *v5\ =\ tmp1;}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ doFlips(std::uint8\_t\ bits,\ sf::Vector2f*\ v0,\ sf::Vector2f*\ v1,\ sf::Vector2f*\ v2,\ sf::Vector2f*\ v3,\ sf::Vector2f*\ v4,\ sf::Vector2f*\ v5)}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//0000\ =\ no\ change}}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//0100\ =\ vertical\ =\ swap\ y\ axis}}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//1000\ =\ horizontal\ =\ swap\ x\ axis}}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//1100\ =\ horiz\ +\ vert\ =\ swap\ both\ axes\ =\ horiz+vert\ =\ rotate\ 180\ degrees}}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//0010\ =\ diag\ =\ rotate\ 90\ degrees\ right\ and\ swap\ x\ axis}}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//0110\ =\ diag+vert\ =\ rotate\ 270\ degrees\ right}}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//1010\ =\ horiz+diag\ =\ rotate\ 90\ degrees\ right}}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//1110\ =\ horiz+vert+diag\ =\ rotate\ 90\ degrees\ right\ and\ swap\ y\ axis}}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!(bits\ \&\ tmx::TileLayer::FlipFlag::Horizontal)\ \&\&}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !(bits\ \&\ tmx::TileLayer::FlipFlag::Vertical)\ \&\&}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !(bits\ \&\ tmx::TileLayer::FlipFlag::Diagonal))}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Shortcircuit\ tests\ for\ nothing\ to\ do}}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00393\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!(bits\ \&\ tmx::TileLayer::FlipFlag::Horizontal)\ \&\&}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bits\ \&\ tmx::TileLayer::FlipFlag::Vertical)\ \&\&}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !(bits\ \&\ tmx::TileLayer::FlipFlag::Diagonal))}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//0100}}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipY(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((bits\ \&\ tmx::TileLayer::FlipFlag::Horizontal)\ \&\&}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !(bits\ \&\ tmx::TileLayer::FlipFlag::Vertical)\ \&\&}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !(bits\ \&\ tmx::TileLayer::FlipFlag::Diagonal))}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//1000}}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipX(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((bits\ \&\ tmx::TileLayer::FlipFlag::Horizontal)\ \&\&}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bits\ \&\ tmx::TileLayer::FlipFlag::Vertical)\ \&\&}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !(bits\ \&\ tmx::TileLayer::FlipFlag::Diagonal))}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00411\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//1100}}
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipY(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00413\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipX(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00414\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!(bits\ \&\ tmx::TileLayer::FlipFlag::Horizontal)\ \&\&}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !(bits\ \&\ tmx::TileLayer::FlipFlag::Vertical)\ \&\&}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bits\ \&\ tmx::TileLayer::FlipFlag::Diagonal))}
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//0010}}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipD(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (!(bits\ \&\ tmx::TileLayer::FlipFlag::Horizontal)\ \&\&}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bits\ \&\ tmx::TileLayer::FlipFlag::Vertical)\ \&\&}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bits\ \&\ tmx::TileLayer::FlipFlag::Diagonal))}
+\DoxyCodeLine{00425\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//0110}}
+\DoxyCodeLine{00427\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipX(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00428\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipD(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00429\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((bits\ \&\ tmx::TileLayer::FlipFlag::Horizontal)\ \&\&}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ !(bits\ \&\ tmx::TileLayer::FlipFlag::Vertical)\ \&\&}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bits\ \&\ tmx::TileLayer::FlipFlag::Diagonal))}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//1010}}
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipY(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipD(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ ((bits\ \&\ tmx::TileLayer::FlipFlag::Horizontal)\ \&\&}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bits\ \&\ tmx::TileLayer::FlipFlag::Vertical)\ \&\&}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (bits\ \&\ tmx::TileLayer::FlipFlag::Diagonal))}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//1110}}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipY(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipX(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ flipD(v0,\ v1,\ v2,\ v3,\ v4,\ v5);}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \textcolor{keyword}{class\ }ChunkArray\ final\ :\ \textcolor{keyword}{public}\ sf::Drawable}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{using\ }Ptr\ =\ std::unique\_ptr<ChunkArray>;}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00455\ \ \ \ \ \ \ \ \ \ \ \ \ tmx::Vector2u\ tileSetSize;}
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2u\ tsTileCount;}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \ \ \ \ std::uint32\_t\ m\_firstGID,\ m\_lastGID;}
+\DoxyCodeLine{00458\ }
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{explicit}\ ChunkArray(\textcolor{keyword}{const}\ sf::Texture\&\ t,\ \textcolor{keyword}{const}\ tmx::Tileset\&\ ts)}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ m\_texture(t)}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ texSize\ =\ getTextureSize();}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tileSetSize\ =\ ts.getTileSize();}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tsTileCount.x\ =\ texSize.x\ /\ tileSetSize.x;}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tsTileCount.y\ =\ texSize.y\ /\ tileSetSize.y;}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_firstGID\ =\ ts.getFirstGID();}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_lastGID\ =\ ts.getLastGID();}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \ \ \ \ \ \ \string~ChunkArray()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \ \ \ \ ChunkArray(\textcolor{keyword}{const}\ ChunkArray\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \ \ \ \ ChunkArray\&\ operator\ =\ (\textcolor{keyword}{const}\ ChunkArray\&)\ =\ \textcolor{keyword}{delete};}
+\DoxyCodeLine{00473\ }
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ reset()}
+\DoxyCodeLine{00475\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_vertices.clear();}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ addTile(\textcolor{keyword}{const}\ Chunk::Tile\&\ tile)}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ v\ :\ tile)}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_vertices.push\_back(v);}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2u\ getTextureSize()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00488\ \textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_texture.getSize();}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ sf::Texture\&\ m\_texture;}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<sf::Vertex>\ m\_vertices;}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ draw(sf::RenderTarget\&\ rt,\ sf::RenderStates\ states)\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{00496\ \textcolor{keyword}{\ \ \ \ \ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ states.texture\ =\ \&m\_texture;}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rt.draw(m\_vertices.data(),\ m\_vertices.size(),\ sf::Triangles,\ states);}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ sf::Uint8\ layerOpacity;\ \ \ \ \ \textcolor{comment}{//\ opacity\ of\ the\ layer}}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ sf::Vector2f\ layerOffset;\ \ \ \textcolor{comment}{//\ Layer\ offset}}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ sf::Vector2u\ mapTileSize;\ \ \ \textcolor{comment}{//\ general\ Tilesize\ of\ Map}}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ sf::Vector2f\ chunkTileCount;\ \ \ \textcolor{comment}{//\ chunk\ tilecount}}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ std::vector<tmx::TileLayer::Tile>\ m\_chunkTileIDs;\ \textcolor{comment}{//\ stores\ all\ tiles\ in\ this\ chunk\ for\ later\ manipulation}}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ \ \ std::vector<sf::Color>\ m\_chunkColors;\ \textcolor{comment}{//\ stores\ colors\ for\ extended\ color\ effects}}
+\DoxyCodeLine{00508\ \ \ \ \ \ \ \ \ std::map<std::uint32\_t,\ tmx::Tileset::Tile>\ m\_animTiles;\ \ \ \ \textcolor{comment}{//\ animation\ catalogue}}
+\DoxyCodeLine{00509\ \ \ \ \ \ \ \ \ std::vector<AnimationState>\ m\_activeAnimations;\ \ \ \ \ \textcolor{comment}{//\ Animations\ to\ be\ done\ in\ this\ chunk}}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \ \ std::vector<ChunkArray::Ptr>\ m\_chunkArrays;}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ draw(sf::RenderTarget\&\ rt,\ sf::RenderStates\ states)\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{00513\ \textcolor{keyword}{\ \ \ \ \ \ \ \ }\{}
+\DoxyCodeLine{00514\ \ \ \ \ \ \ \ \ \ \ \ \ states.transform\ *=\ getTransform();}
+\DoxyCodeLine{00515\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ a\ :\ m\_chunkArrays)}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ rt.draw(*a,\ states);}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00519\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00520\ \ \ \ \ \};}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00522\ \ \ \ \ std::vector<Chunk::Ptr>\ m\_chunks;}
+\DoxyCodeLine{00523\ \ \ \ \ \textcolor{keyword}{mutable}\ std::vector<Chunk*>\ m\_visibleChunks;}
+\DoxyCodeLine{00524\ }
+\DoxyCodeLine{00525\ \ \ \ \ Chunk::Ptr\&\ getChunkAndTransform(std::int32\_t\ x,\ std::int32\_t\ y,\ sf::Vector2u\&\ chunkRelative)}
+\DoxyCodeLine{00526\ \ \ \ \ \{}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ std::uint32\_t\ chunkX\ =\ (x\ *\ m\_mapTileSize.x)\ /\ \textcolor{keyword}{static\_cast<}std::uint32\_t\textcolor{keyword}{>}(m\_chunkSize.x);}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ std::uint32\_t\ chunkY\ =\ (y\ *\ m\_mapTileSize.y)\ /\ \textcolor{keyword}{static\_cast<}std::uint32\_t\textcolor{keyword}{>}(m\_chunkSize.y);}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ chunkRelative.x\ =\ ((x\ *\ m\_mapTileSize.x)\ -\/\ chunkX\ *\ \textcolor{keyword}{static\_cast<}std::uint32\_t\textcolor{keyword}{>}(m\_chunkSize.x))\ /\ m\_mapTileSize.x;}
+\DoxyCodeLine{00530\ \ \ \ \ \ \ \ \ chunkRelative.y\ =\ ((y\ *\ m\_mapTileSize.y)\ -\/\ chunkY\ *\ \textcolor{keyword}{static\_cast<}std::uint32\_t\textcolor{keyword}{>}(m\_chunkSize.y))\ /\ m\_mapTileSize.y;}
+\DoxyCodeLine{00531\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \ m\_chunks[chunkX\ +\ chunkY\ *\ m\_chunkCount.x];}
+\DoxyCodeLine{00532\ \ \ \ \ \}}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \ \ \ \ \textcolor{keywordtype}{void}\ createChunks(\textcolor{keyword}{const}\ tmx::Map\&\ map,\ \textcolor{keyword}{const}\ tmx::TileLayer\&\ layer)}
+\DoxyCodeLine{00535\ \ \ \ \ \{}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \textcolor{comment}{//look\ up\ all\ the\ tile\ sets\ and\ load\ the\ textures}}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ tileSets\ =\ map.getTilesets();}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ layerIDs\ =\ layer.getTiles();}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \ \ std::uint32\_t\ maxID\ =\ std::numeric\_limits<std::uint32\_t>::max();}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \ \ std::vector<const\ tmx::Tileset*>\ usedTileSets;}
+\DoxyCodeLine{00541\ }
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ i\ =\ tileSets.rbegin();\ i\ !=\ tileSets.rend();\ ++i)}
+\DoxyCodeLine{00543\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ tile\ :\ layerIDs)}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (tile.ID\ >=\ i-\/>getFirstGID()\ \&\&\ tile.ID\ <\ maxID)}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ usedTileSets.push\_back(\&(*i));}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \ \ \ \ maxID\ =\ i-\/>getFirstGID();}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00554\ }
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ sf::Image\ fallback;}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ fallback.create(2,\ 2,\ sf::Color::Magenta);}
+\DoxyCodeLine{00557\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ ts\ :\ usedTileSets)}
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ path\ =\ ts-\/>getImagePath();}
+\DoxyCodeLine{00560\ }
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \ \ \ \ std::unique\_ptr<sf::Texture>\ newTexture\ =\ std::make\_unique<sf::Texture>();}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Image\ img;}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!img.loadFromFile(path))}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00565\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newTexture-\/>loadFromImage(fallback);}
+\DoxyCodeLine{00566\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (ts-\/>hasTransparency())}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ transparency\ =\ ts-\/>getTransparencyColour();}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ img.createMaskFromColor(\{\ transparency.r,\ transparency.g,\ transparency.b,\ transparency.a\ \});}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ newTexture-\/>loadFromImage(img);}
+\DoxyCodeLine{00575\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00576\ \ \ \ \ \ \ \ \ \ \ \ \ m\_textureResource.insert(std::make\_pair(path,\ std::move(newTexture)));}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00578\ }
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \ \ \textcolor{comment}{//calculate\ the\ number\ of\ chunks\ in\ the\ layer}}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \textcolor{comment}{//and\ create\ each\ one}}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\ bounds\ =\ map.getBounds();}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ m\_chunkCount.x\ =\ \textcolor{keyword}{static\_cast<}sf::Uint32\textcolor{keyword}{>}(std::ceil(bounds.width\ /\ m\_chunkSize.x));}
+\DoxyCodeLine{00583\ \ \ \ \ \ \ \ \ m\_chunkCount.y\ =\ \textcolor{keyword}{static\_cast<}sf::Uint32\textcolor{keyword}{>}(std::ceil(bounds.height\ /\ m\_chunkSize.y));}
+\DoxyCodeLine{00584\ }
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \ \ sf::Vector2u\ tileSize(map.getTileSize().x,\ map.getTileSize().y);}
+\DoxyCodeLine{00586\ }
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ y\ =\ 0u;\ y\ <\ m\_chunkCount.y;\ ++y)}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f\ tileCount(m\_chunkSize.x\ /\ tileSize.x,\ m\_chunkSize.y\ /\ tileSize.y);}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ x\ =\ 0u;\ x\ <\ m\_chunkCount.x;\ ++x)}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ calculate\ size\ of\ each\ Chunk\ (clip\ against\ map)}}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((x\ +\ 1)\ *\ m\_chunkSize.x\ >\ bounds.width)}
+\DoxyCodeLine{00594\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tileCount.x\ =\ (bounds.width\ -\/\ x\ *\ m\_chunkSize.x)\ /\ map.getTileSize().x;}
+\DoxyCodeLine{00596\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00597\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((y\ +\ 1)\ *\ m\_chunkSize.y\ >\ bounds.height)}
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00599\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ tileCount.y\ =\ (bounds.height\ -\/\ y\ *\ m\_chunkSize.y)\ /\ map.getTileSize().y;}
+\DoxyCodeLine{00600\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00601\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//m\_chunks.emplace\_back(std::make\_unique<Chunk>(layer,\ usedTileSets,}}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ sf::Vector2f(x\ *\ m\_chunkSize.x,\ y\ *\ m\_chunkSize.y),\ tileCount,\ map.getTileCount().x,\ m\_textureResource));}}
+\DoxyCodeLine{00603\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_chunks.emplace\_back(std::make\_unique<Chunk>(layer,\ usedTileSets,}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ sf::Vector2f(x\ *\ m\_chunkSize.x,\ y\ *\ m\_chunkSize.y),\ tileCount,\ tileSize,\ map.getTileCount().x,\ m\_textureResource,\ map.getAnimatedTiles()));}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00607\ \ \ \ \ \}}
+\DoxyCodeLine{00608\ }
+\DoxyCodeLine{00609\ \ \ \ \ \textcolor{keywordtype}{void}\ updateVisibility(\textcolor{keyword}{const}\ sf::View\&\ view)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00610\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ sf::Vector2f\ viewCorner\ =\ view.getCenter();}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ viewCorner\ -\/=\ view.getSize()\ /\ 2.f;}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \ \ std::int32\_t\ posX\ =\ \textcolor{keyword}{static\_cast<}std::int32\_t\textcolor{keyword}{>}(std::floor(viewCorner.x\ /\ m\_chunkSize.x));}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ std::int32\_t\ posY\ =\ \textcolor{keyword}{static\_cast<}std::int32\_t\textcolor{keyword}{>}(std::floor(viewCorner.y\ /\ m\_chunkSize.y));}
+\DoxyCodeLine{00616\ \ \ \ \ \ \ \ \ std::int32\_t\ posX2\ =\ \textcolor{keyword}{static\_cast<}std::int32\_t\textcolor{keyword}{>}(std::ceil((viewCorner.x\ +\ view.getSize().x)\ /\ m\_chunkSize.x));}
+\DoxyCodeLine{00617\ \ \ \ \ \ \ \ \ std::int32\_t\ posY2\ =\ \textcolor{keyword}{static\_cast<}std::int32\_t\textcolor{keyword}{>}(std::ceil((viewCorner.y\ +\ view.getSize().x)\ /\ m\_chunkSize.y));}
+\DoxyCodeLine{00618\ }
+\DoxyCodeLine{00619\ \ \ \ \ \ \ \ \ std::vector<Chunk*>\ visible;}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ y\ =\ posY;\ y\ <\ posY2;\ ++y)}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ x\ =\ posX;\ x\ <\ posX2;\ ++x)}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::size\_t\ idx\ =\ y\ *\ std::int32\_t(m\_chunkCount.x)\ +\ x;}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ >=\ 0u\ \&\&\ idx\ <\ m\_chunks.size()\ \&\&\ !m\_chunks[idx]-\/>empty())}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00627\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ visible.push\_back(m\_chunks[idx].get());}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00629\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00631\ }
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ std::swap(m\_visibleChunks,\ visible);}
+\DoxyCodeLine{00633\ \ \ \ \ \}}
+\DoxyCodeLine{00634\ }
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00636\ \ \ \ \ \textcolor{keywordtype}{void}\ draw(sf::RenderTarget\&\ rt,\ sf::RenderStates\ states)\textcolor{keyword}{\ const\ override}}
+\DoxyCodeLine{00637\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00638\ \ \ \ \ \ \ \ \ states.transform.translate(m\_offset);}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ \ \ \ \ \ \ \textcolor{comment}{//calc\ view\ coverage\ and\ draw\ nearest\ chunks}}
+\DoxyCodeLine{00641\ \ \ \ \ \ \ \ \ updateVisibility(rt.getView());}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ c\ :\ m\_visibleChunks)}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00644\ \ \ \ \ \ \ \ \ \ \ \ \ rt.draw(*c,\ states);}
+\DoxyCodeLine{00645\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00646\ \ \ \ \ \}}
+\DoxyCodeLine{00647\ \};}
+\DoxyCodeLine{00648\ }
+\DoxyCodeLine{00649\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//SFML\_ORTHO\_HPP\_}}
+
+\end{DoxyCode}
