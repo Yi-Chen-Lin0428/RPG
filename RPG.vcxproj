@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{badb5c4d-466c-4c88-9ca8-f39868f5ccb2}</ProjectGuid>
+    <RootNamespace>RPG</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>SFML_STATIC;TMXLITE_STATIC_LIB;_CRT_SECURE_NO_WARNINGS;DEBUG</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\macma\Desktop\RPG\external;C:\Users\macma\Desktop\RPG\inc;C:\SFML-2.5.1\include;C:\tmxlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\tmxlite\build\Debug;C:\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-audio-s-d.lib;sfml-graphics-s-d.lib;sfml-main-d.lib;sfml-network-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;opengl32.lib;freetype.lib;gdi32.lib;winmm.lib;tmxlite-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>SFML_STATIC;TMXLITE_STATIC_LIB;_CRT_SECURE_NO_WARNINGS;DEBUG</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\macma\Desktop\RPG\external;C:\Users\macma\Desktop\RPG\inc;C:\SFML-2.5.1\include;C:\tmxlite\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\tmxlite\build\Debug;C:\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-audio-s-d.lib;sfml-graphics-s-d.lib;sfml-main-d.lib;sfml-network-s-d.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;opengl32.lib;freetype.lib;gdi32.lib;winmm.lib;tmxlite-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Image Include="resources\garage.png" />
+    <Image Include="resources\gas_station.png" />
+    <Image Include="resources\hall.png" />
+    <Image Include="resources\Interior_Tileset_32x32.png" />
+    <Image Include="resources\matrix.png" />
+    <Image Include="resources\Player_Death .png" />
+    <Image Include="resources\Player_Hit .png" />
+    <Image Include="resources\Player_idle.png" />
+    <Image Include="resources\Player_knocked.png" />
+    <Image Include="resources\Player_run.png" />
+    <Image Include="resources\Wasteland_Tileset_32x32.png" />
+    <Image Include="resources\yard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\garage.tmx" />
+    <None Include="resources\gas_station.tmx" />
+    <None Include="resources\hall.tmx" />
+    <None Include="resources\map.json" />
+    <None Include="resources\matrix.tmx" />
+    <None Include="resources\player_idle_sheet.tsx" />
+    <None Include="resources\TiledMap.tiled-project" />
+    <None Include="resources\TiledMap.tiled-session" />
+    <None Include="resources\TileSheet_1.tsx" />
+    <None Include="resources\TileSheet_2.tsx" />
+    <None Include="resources\yard.tmx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="external\AnimationComponent.cpp" />
+    <ClCompile Include="external\stdafx.cpp" />
+    <ClCompile Include="external\VectorMath.cpp" />
+    <ClCompile Include="src\AllItems.cpp" />
+    <ClCompile Include="src\Bag.cpp" />
+    <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\Character.cpp" />
+    <ClCompile Include="src\CollisonDetecter.cpp" />
+    <ClCompile Include="src\InputController.cpp" />
+    <ClCompile Include="src\LifeEntity.cpp" />
+    <ClCompile Include="src\MapManager.cpp" />
+    <ClCompile Include="src\Shop.cpp" />
+    <ClCompile Include="src\Source.cpp" />
+    <ClCompile Include="src\Text.cpp" />
+    <ClCompile Include="src\UI.cpp" />
+    <ClCompile Include="src\ViewController.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="external\AnimationComponent.hpp" />
+    <ClInclude Include="external\stdafx.h" />
+    <ClInclude Include="external\VectorMath.h" />
+    <ClInclude Include="inc\AllItems.hpp" />
+    <ClInclude Include="inc\Bag.hpp" />
+    <ClInclude Include="inc\Button.hpp" />
+    <ClInclude Include="inc\Character.hpp" />
+    <ClInclude Include="inc\CollisonDetecter.hpp" />
+    <ClInclude Include="inc\EventConfig.hpp" />
+    <ClInclude Include="inc\EventSystem.hpp" />
+    <ClInclude Include="inc\InputController.hpp" />
+    <ClInclude Include="inc\LifeEntity.hpp" />
+    <ClInclude Include="inc\MapManager.hpp" />
+    <ClInclude Include="inc\SFMLOrthogonalLayer.hpp" />
+    <ClInclude Include="inc\Shop.hpp" />
+    <ClInclude Include="inc\Text.hpp" />
+    <ClInclude Include="inc\UI.hpp" />
+    <ClInclude Include="inc\ViewController.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

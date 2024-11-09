@@ -1,0 +1,48 @@
+    //weaponSprite = weapon->getSprite();
+    //weaponSprite.setScale(1.5, 1.5);
+
+    //if(dis != sf::Vector2f(0.f, 0.f))
+    //{
+    //    switch (movement)
+    //    {
+    //    case state::up:
+    //        weaponSprite.setOrigin(weaponSprite.getLocalBounds().width / 2, weaponSprite.getLocalBounds().height / 2);
+    //        weaponSprite.setRotation(270);
+    //        weaponSprite.setPosition(player.getPosition().x + 20, player.getPosition().y + 12);
+    //        weaponBBox.setRotation(270);
+    //        weaponBBox.setPosition(weaponSprite.getPosition().x - 16, weaponSprite.getPosition().y + 15);
+    //        break;
+    //    case state::down:
+    //        weaponSprite.setOrigin(weaponSprite.getLocalBounds().width / 2, weaponSprite.getLocalBounds().height / 2);
+    //        weaponSprite.setRotation(90);
+    //        weaponSprite.setPosition(player.getPosition().x + 10, player.getPosition().y + 30);
+    //        weaponBBox.setRotation(90);
+    //        weaponBBox.setPosition(weaponSprite.getPosition().x + 16, weaponSprite.getPosition().y - 16);
+    //        break;
+    //    case state::left:
+    //        weaponSprite.setOrigin(weaponSprite.getLocalBounds().width / 2, weaponSprite.getLocalBounds().height / 2);
+    //        weaponSprite.setRotation(180);
+    //        weaponSprite.setPosition(player.getPosition().x, player.getPosition().y + 20);
+    //        weaponBBox.setRotation(180);
+    //        weaponBBox.setPosition(weaponSprite.getPosition().x + 16, weaponSprite.getPosition().y + 20);
+    //        break;
+    //    case state::right:
+    //        weaponSprite.setOrigin(weaponSprite.getLocalBounds().width / 2, weaponSprite.getLocalBounds().height / 2);
+    //        weaponSprite.setRotation(0);
+    //        weaponSprite.setPosition(player.getPosition().x + 32, player.getPosition().y + 20);
+    //        weaponBBox.setRotation(0);
+    //        weaponBBox.setPosition(weaponSprite.getPosition().x - 16, weaponSprite.getPosition().y - 16);
+    //        break;
+    //    default:
+    //        break;
+    //    }
+    //}
+    //else
+    //{
+    //    weaponSprite.setOrigin(weaponSprite.getLocalBounds().width / 2, weaponSprite.getLocalBounds().height / 2);
+    //    weaponSprite.setRotation(90);
+    //    weaponSprite.setPosition(player.getPosition().x + 10, player.getPosition().y + 30);
+    //    weaponBBox.setRotation(90);
+    //    weaponBBox.setPosition(weaponSprite.getPosition().x + 16, weaponSprite.getPosition().y - 16);
+    //}
+    

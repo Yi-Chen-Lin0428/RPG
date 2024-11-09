@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="來源檔案">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="標頭檔">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{8f9d6592-2d26-4c6a-a1c4-7554118790e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{126e8be8-8daa-49d9-bdfd-d2d49500cae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{29c44e47-4672-4672-9383-696226fdff33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\Interior_Tileset_32x32.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\Wasteland_Tileset_32x32.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\Player_Death .png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\Player_Hit .png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\Player_idle.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\Player_knocked.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\Player_run.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\garage.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\gas_station.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\hall.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\matrix.png">
+      <Filter>resources</Filter>
+    </Image>
+    <Image Include="resources\yard.png">
+      <Filter>resources</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\map.json">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\TiledMap.tiled-project">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\TiledMap.tiled-session">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\TileSheet_1.tsx">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\TileSheet_2.tsx">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\player_idle_sheet.tsx">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\garage.tmx">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\gas_station.tmx">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\hall.tmx">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\matrix.tmx">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="resources\yard.tmx">
+      <Filter>resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Character.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LifeEntity.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapManager.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Source.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Text.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CollisonDetecter.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Shop.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Button.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\InputController.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="external\AnimationComponent.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="external\stdafx.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="external\VectorMath.cpp">
+      <Filter>external</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AllItems.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Bag.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ViewController.cpp">
+      <Filter>來源檔案</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\Character.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\LifeEntity.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\MapManager.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\SFMLOrthogonalLayer.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Text.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\CollisonDetecter.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\EventSystem.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\EventConfig.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Shop.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Button.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\InputController.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="external\AnimationComponent.hpp">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="external\stdafx.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="external\VectorMath.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\AllItems.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\Bag.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\UI.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+    <ClInclude Include="inc\ViewController.hpp">
+      <Filter>標頭檔</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
